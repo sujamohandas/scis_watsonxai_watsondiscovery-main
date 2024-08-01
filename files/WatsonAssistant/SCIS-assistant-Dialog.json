@@ -1,0 +1,437 @@
+{
+  "intents": [
+    {
+      "intent": "get_categories_with_most_spending",
+      "examples": [
+        {
+          "text": "show me categories with the most amount of spending."
+        },
+        {
+          "text": "show me my top categories based on spending"
+        },
+        {
+          "text": "what are my categories with the top amount of spending"
+        },
+        {
+          "text": "what categories have the most spending?"
+        },
+        {
+          "text": "which categories have the most amount spent?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "get_started_scope_3_emissions",
+      "examples": [
+        {
+          "text": "get me started collecting scope 3 emissions"
+        },
+        {
+          "text": "help me get started collecting scope 3 emissions"
+        },
+        {
+          "text": "help me understand how I can collect scope 3 emissions"
+        },
+        {
+          "text": "hi, where should I start with setting my targets for scope 3 emissions reductions"
+        },
+        {
+          "text": "how can I start collecting scope 3 emissions?"
+        },
+        {
+          "text": "how could i set my scope 3 emission targets?"
+        },
+        {
+          "text": "how do I start collecting scope 3 emissions"
+        },
+        {
+          "text": "where should I start to set my targets for scope 3 emissions reductions"
+        },
+        {
+          "text": "where should I start with setting my targets for scope 3 emissions reductions"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "get_supplier_emissions_docs",
+      "examples": [
+        {
+          "text": "help me understand which suppliers to target?"
+        },
+        {
+          "text": "how do I know which suppliers to target?"
+        },
+        {
+          "text": "how many suppliers do I need to engage to hit"
+        },
+        {
+          "text": "How many suppliers do I need to engage to hit a two thirds emissions target"
+        },
+        {
+          "text": "what are the suppliers that I should target?"
+        },
+        {
+          "text": "which suppliers should I target emissions for?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "get_supplier_response_times",
+      "examples": [
+        {
+          "text": "how long do people typically wait for suppliers to respond?"
+        },
+        {
+          "text": "how long should I wait until the supplier responds?"
+        },
+        {
+          "text": "show me the typical wait times for suppliers"
+        },
+        {
+          "text": "what is the typical wait time before suppliers respond?"
+        },
+        {
+          "text": "what is the typical wait time for suppliers?"
+        },
+        {
+          "text": "what is the typical wait time for suppliers to respond on the compliance request?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "get_suppliers_for_category",
+      "examples": [
+        {
+          "text": "show me suppliers for the category"
+        },
+        {
+          "text": "show me the top suppliers for this category"
+        },
+        {
+          "text": "what are the suppliers for this category?"
+        },
+        {
+          "text": "which are the top suppliers in this category?"
+        },
+        {
+          "text": "Who are the top suppliers for category?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "scope_3_clarification",
+      "examples": [
+        {
+          "text": "I am not sure I fully understand where I should focus my efforts?"
+        },
+        {
+          "text": "That's interesting"
+        },
+        {
+          "text": "That's interesting, but I am not sure I fully understand where I should focus my efforts?"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "webhooks": [
+    {
+      "url": "https://api.ibm.com/scassistant/run/named-entities/na/recognize",
+      "name": "main_webhook",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer $integrations.chat.private.jwt"
+        },
+        {
+          "name": "X-IBM-Client-Id",
+          "value": "scassistant-$integrations.chat.private.tenant_id"
+        }
+      ]
+    }
+  ],
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_3_1691542356788",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "scope 3 emissions Q&A",
+      "actions": [
+        {
+          "name": "action_37893-4",
+          "type": "assistant_action",
+          "parameters": {
+            "Question": "<? input.text ?>"
+          },
+          "result_variable": "action_result_3",
+          "assistant_action_settings": {
+            "use_global_variables": true,
+            "lookup_action_by_title": false
+          }
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#get_supplier_emissions_docs || #get_started_scope_3_emissions || #get_supplier_response_times",
+      "user_label": "scope 3 emissions Q&A",
+      "dialog_node": "node_1_1691728592637",
+      "previous_sibling": "Welcome"
+    },
+    {
+      "type": "standard",
+      "title": "get suppliers for category",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "text": "<? input.text ?>"
+          },
+          "result_variable": "sterling_entities"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#get_suppliers_for_category",
+      "dialog_node": "node_3_1691542356788",
+      "previous_sibling": "node_8_1691541794321"
+    },
+    {
+      "type": "standard",
+      "title": "set category_name",
+      "parent": "node_3_1691542356788",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1718707967912"
+    },
+    {
+      "type": "standard",
+      "title": "get categories with most amount spenti",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Here are the categories that I found with the most spending."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "multiline"
+          },
+          {
+            "user_defined": {
+              "sterling_layout_template_response": {
+                "status": "OK",
+                "uihub_layout_templates": [
+                  {
+                    "id": "compactTopCategories",
+                    "size": "large",
+                    "parameters": {}
+                  }
+                ]
+              }
+            },
+            "response_type": "user_defined"
+          }
+        ]
+      },
+      "conditions": "#get_categories_with_most_spending",
+      "dialog_node": "node_8_1691541794321",
+      "previous_sibling": "node_1_1691728592637"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1718707967912",
+      "context": {
+        "category": "<? $sterling_entities.category_name.value ?>"
+      },
+      "conditions": "$sterling_entities.category_name.value",
+      "dialog_node": "response_10_1718708574605"
+    },
+    {
+      "type": "response_condition",
+      "output": {},
+      "parent": "node_3_1691542356788",
+      "context": {
+        "webhook_error": "<? output.webhook_error ?>"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "response_2_1718173113165",
+      "previous_sibling": "response_6_1718173112262"
+    },
+    {
+      "type": "response_condition",
+      "output": {},
+      "parent": "Anything else",
+      "disabled": true,
+      "conditions": "anything_else",
+      "dialog_node": "response_5_1719399367163",
+      "previous_sibling": "response_7_1719399366443"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "The main suppliers of <? $sterling_entities.category_name.value ?> are:\n(Click on 'Open in dashboard' for more details and the ability to navigate to a supplier's sustainability dashboard. From there you can get started sending requests for PCF data to the supplier.)"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "multiline"
+          },
+          {
+            "user_defined": {
+              "sterling_layout_template_response": {
+                "status": "OK",
+                "uihub_layout_templates": [
+                  {
+                    "id": "compactSuppliersForCategory",
+                    "size": "large",
+                    "parameters": {
+                      "category": "<? $sterling_entities.category_name.value ?>"
+                    }
+                  }
+                ]
+              }
+            },
+            "response_type": "user_defined"
+          }
+        ]
+      },
+      "parent": "node_3_1691542356788",
+      "context": {},
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "user_input",
+        "dialog_node": "node_3_1718707967912"
+      },
+      "conditions": "$sterling_entities",
+      "dialog_node": "response_6_1718173112262",
+      "previous_sibling": "node_3_1718707967912"
+    },
+    {
+      "type": "response_condition",
+      "output": {},
+      "parent": "Anything else",
+      "disabled": true,
+      "conditions": "$action_result_2",
+      "dialog_node": "response_7_1719399366443"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": ""
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_1_1691728592637",
+      "conditions": "anything_else",
+      "dialog_node": "response_9_1719242764005",
+      "previous_sibling": "response_9_1719242764793"
+    },
+    {
+      "type": "response_condition",
+      "parent": "node_1_1691728592637",
+      "conditions": "$action_result_3",
+      "dialog_node": "response_9_1719242764793"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello. How can I help you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "skill_version": "2.0.0"
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "counterexamples": [],
+  "learning_opt_out": false,
+  "language": "en",
+  "description": "created for assistant 0a88e9f7-0456-44a9-911f-fb00a939e284",
+  "name": "SCIS assistant-dialog"
+}
