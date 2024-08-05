@@ -1,4 +1,4 @@
-# Infusing watsonx.ai with IBM Supply Chain Intelligence Suite
+# Supply chain Sustainability Advisor -Infusing watsonx.ai with IBM Supply Chain Intelligence Suite
 
 The IBM Supply Chain Intelligence Suite is a comprehensive software platform designed to optimize and enhance supply chain operations. It combines the power of AI and the speed of automation to help you quickly gauge the status of your supply chain and mitigate disruptions. The suite offers a range of tools and capabilities, including real-time visibility, predictive analytics, demand forecasting, and risk management. By integrating these features, IBM Supply Chain Intelligence Suite helps organizations improve efficiency, reduce costs, enhance collaboration with suppliers and partners, and respond proactively to disruptions and market changes.
 
